@@ -1,0 +1,497 @@
+Elm.WebGL = Elm.WebGL || {};
+Elm.WebGL.make = function (_elm) {
+   "use strict";
+   _elm.WebGL = _elm.WebGL || {};
+   if (_elm.WebGL.values)
+   return _elm.WebGL.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "WebGL",
+   $Basics = Elm.Basics.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Native$WebGL = Elm.Native.WebGL.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Task = Elm.Task.make(_elm);
+   var DecrementWrap = {ctor: "DecrementWrap"};
+   var IncrementWrap = {ctor: "IncrementWrap"};
+   var Invert = {ctor: "Invert"};
+   var Decrement = {ctor: "Decrement"};
+   var Increment = {ctor: "Increment"};
+   var Replace = {ctor: "Replace"};
+   var None = {ctor: "None"};
+   var Keep = {ctor: "Keep"};
+   var computeZModeString = function (mode) {
+      return function () {
+         switch (mode.ctor)
+         {case "Decrement":
+            return "DECREMENT";
+            case "DecrementWrap":
+            return "DECREMENT_WRAP";
+            case "Increment":
+            return "INCREMENT";
+            case "IncrementWrap":
+            return "INCREMENT_WRAP";
+            case "Invert": return "INVERT";
+            case "Keep": return "KEEP";
+            case "None": return "ZERO";
+            case "Replace":
+            return "REPLACE";}
+         _U.badCase($moduleName,
+         "between lines 539 and 562");
+      }();
+   };
+   var FrontAndBack = {ctor: "FrontAndBack"};
+   var Back = {ctor: "Back"};
+   var Front = {ctor: "Front"};
+   var computeFaceModeString = function (mode) {
+      return function () {
+         switch (mode.ctor)
+         {case "Back": return "BACK";
+            case "Front": return "FRONT";
+            case "FrontAndBack":
+            return "FRONT_AND_BACK";}
+         _U.badCase($moduleName,
+         "between lines 517 and 525");
+      }();
+   };
+   var NotEqual = {ctor: "NotEqual"};
+   var Greater = {ctor: "Greater"};
+   var GreaterOrEqual = {ctor: "GreaterOrEqual"};
+   var Equal = {ctor: "Equal"};
+   var LessOrEqual = {ctor: "LessOrEqual"};
+   var Less = {ctor: "Less"};
+   var Always = {ctor: "Always"};
+   var Never = {ctor: "Never"};
+   var computeCompareModeString = function (mode) {
+      return function () {
+         switch (mode.ctor)
+         {case "Always": return "ALWAYS";
+            case "Equal": return "EQUAL";
+            case "Greater":
+            return "Greater";
+            case "GreaterOrEqual":
+            return "GEQUAL";
+            case "Less": return "LESS";
+            case "LessOrEqual":
+            return "LEQUAL";
+            case "Never": return "NEVER";
+            case "NotEqual":
+            return "NOTEQUAL";}
+         _U.badCase($moduleName,
+         "between lines 475 and 498");
+      }();
+   };
+   var ReverseSubtract = {ctor: "ReverseSubtract"};
+   var Subtract = {ctor: "Subtract"};
+   var Add = {ctor: "Add"};
+   var computeBlendModeString = function (mode) {
+      return function () {
+         switch (mode.ctor)
+         {case "Add": return "FUNC_ADD";
+            case "ReverseSubtract":
+            return "FUNC_REVERSE_SUBTRACT";
+            case "Subtract":
+            return "FUNC_SUBTRACT";}
+         _U.badCase($moduleName,
+         "between lines 453 and 461");
+      }();
+   };
+   var SrcAlphaSaturate = {ctor: "SrcAlphaSaturate"};
+   var OneMinusConstantAlpha = {ctor: "OneMinusConstantAlpha"};
+   var ConstantAlpha = {ctor: "ConstantAlpha"};
+   var OneMinusConstantColor = {ctor: "OneMinusConstantColor"};
+   var ConstantColor = {ctor: "ConstantColor"};
+   var OneMinusDstAlpha = {ctor: "OneMinusDstAlpha"};
+   var DstAlpha = {ctor: "DstAlpha"};
+   var OneMinusSrcAlpha = {ctor: "OneMinusSrcAlpha"};
+   var SrcAlpha = {ctor: "SrcAlpha"};
+   var OneMinusDstColor = {ctor: "OneMinusDstColor"};
+   var DstColor = {ctor: "DstColor"};
+   var OneMinusSrcColor = {ctor: "OneMinusSrcColor"};
+   var SrcColor = {ctor: "SrcColor"};
+   var One = {ctor: "One"};
+   var Zero = {ctor: "Zero"};
+   var computeBlendOperationString = function (operation) {
+      return function () {
+         switch (operation.ctor)
+         {case "ConstantAlpha":
+            return "CONSTANT_ALPHA";
+            case "ConstantColor":
+            return "CONSTANT_COLOR";
+            case "DstAlpha":
+            return "DST_ALPHA";
+            case "DstColor":
+            return "DST_COLOR";
+            case "One": return "ONE";
+            case "OneMinusConstantAlpha":
+            return "ONE_MINUS_CONSTANT_ALPHA";
+            case "OneMinusConstantColor":
+            return "ONE_MINUS_CONSTANT_COLOR";
+            case "OneMinusDstAlpha":
+            return "ONE_MINUS_DST_ALPHA";
+            case "OneMinusDstColor":
+            return "ONE_MINUS_DST_COLOR";
+            case "OneMinusSrcAlpha":
+            return "ONE_MINUS_SRC_ALPHA";
+            case "OneMinusSrcColor":
+            return "ONE_MINUS_SRC_COLOR";
+            case "SrcAlpha":
+            return "SRC_ALPHA";
+            case "SrcAlphaSaturate":
+            return "SRC_ALPHA_SATURATE";
+            case "SrcColor":
+            return "SRC_COLOR";
+            case "Zero": return "ZERO";}
+         _U.badCase($moduleName,
+         "between lines 383 and 427");
+      }();
+   };
+   var StencilTest = {ctor: "StencilTest"};
+   var ScissorTest = {ctor: "ScissorTest"};
+   var SampleCoverage = {ctor: "SampleCoverage"};
+   var SampleAlphaToCoverage = {ctor: "SampleAlphaToCoverage"};
+   var PolygonOffsetFill = {ctor: "PolygonOffsetFill"};
+   var Dither = {ctor: "Dither"};
+   var DepthTest = {ctor: "DepthTest"};
+   var CullFace = {ctor: "CullFace"};
+   var Blend = {ctor: "Blend"};
+   var computeCapabilityString = function (capability) {
+      return function () {
+         switch (capability.ctor)
+         {case "Blend": return "BLEND";
+            case "CullFace":
+            return "CULL_FACE";
+            case "DepthTest":
+            return "DEPTH_TEST";
+            case "Dither": return "DITHER";
+            case "PolygonOffsetFill":
+            return "POLYGON_OFFSET_FILL";
+            case "SampleAlphaToCoverage":
+            return "SAMPLE_ALPHA_TO_COVERAGE";
+            case "SampleCoverage":
+            return "SAMPLE_COVERAGE";
+            case "ScissorTest":
+            return "SCISSOR_TEST";
+            case "StencilTest":
+            return "STENCIL_TEST";}
+         _U.badCase($moduleName,
+         "between lines 321 and 347");
+      }();
+   };
+   var StencilOperationSeparate = function (a) {
+      return {ctor: "StencilOperationSeparate"
+             ,_0: a};
+   };
+   var StencilOperation = function (a) {
+      return {ctor: "StencilOperation"
+             ,_0: a};
+   };
+   var StencilFuncSeparate = function (a) {
+      return {ctor: "StencilFuncSeparate"
+             ,_0: a};
+   };
+   var StencilFunc = function (a) {
+      return {ctor: "StencilFunc"
+             ,_0: a};
+   };
+   var SampleCoverageFunc = function (a) {
+      return {ctor: "SampleCoverageFunc"
+             ,_0: a};
+   };
+   var DepthFunc = function (a) {
+      return {ctor: "DepthFunc"
+             ,_0: a};
+   };
+   var BlendFunc = function (a) {
+      return {ctor: "BlendFunc"
+             ,_0: a};
+   };
+   var BlendEquationSeparate = function (a) {
+      return {ctor: "BlendEquationSeparate"
+             ,_0: a};
+   };
+   var BlendEquation = function (a) {
+      return {ctor: "BlendEquation"
+             ,_0: a};
+   };
+   var BlendColor = function (a) {
+      return {ctor: "BlendColor"
+             ,_0: a};
+   };
+   var Disable = function (a) {
+      return {ctor: "Disable"
+             ,_0: a};
+   };
+   var Enable = function (a) {
+      return {ctor: "Enable"
+             ,_0: a};
+   };
+   var computeAPICall = function ($function) {
+      return function () {
+         switch ($function.ctor)
+         {case "BlendColor":
+            switch ($function._0.ctor)
+              {case "_Tuple4":
+                 return A4($Native$WebGL.blendColor,
+                   $function._0._0,
+                   $function._0._1,
+                   $function._0._2,
+                   $function._0._3);}
+              break;
+            case "BlendEquation":
+            return $Native$WebGL.blendEquation(computeBlendModeString($function._0));
+            case "BlendEquationSeparate":
+            switch ($function._0.ctor)
+              {case "_Tuple2":
+                 return function () {
+                      var modeAlpha = computeBlendModeString($function._0._1);
+                      var modeRGB = computeBlendModeString($function._0._0);
+                      return A2($Native$WebGL.blendEquationSeparate,
+                      modeRGB,
+                      modeAlpha);
+                   }();}
+              break;
+            case "BlendFunc":
+            switch ($function._0.ctor)
+              {case "_Tuple2":
+                 return function () {
+                      var dst = computeBlendOperationString($function._0._1);
+                      var src = computeBlendOperationString($function._0._0);
+                      return A2($Native$WebGL.blendFunc,
+                      src,
+                      dst);
+                   }();}
+              break;
+            case "DepthFunc":
+            return $Native$WebGL.depthFunc(computeCompareModeString($function._0));
+            case "Disable":
+            return $Native$WebGL.disable(computeCapabilityString($function._0));
+            case "Enable":
+            return $Native$WebGL.enable(computeCapabilityString($function._0));
+            case "SampleCoverageFunc":
+            switch ($function._0.ctor)
+              {case "_Tuple2":
+                 return A2($Native$WebGL.sampleCoverage,
+                   $function._0._0,
+                   $function._0._1);}
+              break;
+            case "StencilFunc":
+            switch ($function._0.ctor)
+              {case "_Tuple3":
+                 return function () {
+                      var mode = computeCompareModeString($function._0._0);
+                      return A3($Native$WebGL.stencilFunc,
+                      mode,
+                      $function._0._1,
+                      $function._0._2);
+                   }();}
+              break;
+            case "StencilFuncSeparate":
+            switch ($function._0.ctor)
+              {case "_Tuple4":
+                 return function () {
+                      var mode = computeCompareModeString($function._0._1);
+                      var face = computeFaceModeString($function._0._0);
+                      return A4($Native$WebGL.stencilFuncSeparate,
+                      face,
+                      mode,
+                      $function._0._2,
+                      $function._0._3);
+                   }();}
+              break;
+            case "StencilOperation":
+            switch ($function._0.ctor)
+              {case "_Tuple3":
+                 return function () {
+                      var zpass = computeZModeString($function._0._2);
+                      var zfail = computeZModeString($function._0._1);
+                      var fail = computeZModeString($function._0._0);
+                      return A3($Native$WebGL.stencilOperation,
+                      fail,
+                      zfail,
+                      zpass);
+                   }();}
+              break;
+            case "StencilOperationSeparate":
+            switch ($function._0.ctor)
+              {case "_Tuple4":
+                 return function () {
+                      var zpass = computeZModeString($function._0._3);
+                      var zfail = computeZModeString($function._0._2);
+                      var fail = computeZModeString($function._0._1);
+                      var face = computeFaceModeString($function._0._0);
+                      return A4($Native$WebGL.stencilOperationSeparate,
+                      face,
+                      fail,
+                      zfail,
+                      zpass);
+                   }();}
+              break;}
+         _U.badCase($moduleName,
+         "between lines 176 and 229");
+      }();
+   };
+   var computeAPICalls = function (functionCalls) {
+      return A2($List.map,
+      computeAPICall,
+      functionCalls);
+   };
+   var webglWithConfig = F3(function (functionCalls,
+   dimensions,
+   entities) {
+      return A2($Native$WebGL.webgl,
+      dimensions,
+      entities)(computeAPICalls(functionCalls));
+   });
+   var defaultConfiguration = _L.fromArray([Enable(DepthTest)]);
+   var webgl = webglWithConfig(defaultConfiguration);
+   var renderWithConfig = F5(function (functionCalls,
+   vert,
+   frag,
+   buffer,
+   uniforms) {
+      return A4($Native$WebGL.render,
+      vert,
+      frag,
+      buffer,
+      uniforms)(computeAPICalls(functionCalls));
+   });
+   var render = renderWithConfig(_L.fromArray([]));
+   var Renderable = {ctor: "Renderable"};
+   var textureSize = $Native$WebGL.textureSize;
+   var Error = {ctor: "Error"};
+   var Nearest = {ctor: "Nearest"};
+   var Linear = {ctor: "Linear"};
+   var loadTextureWithFilter = F2(function (filter,
+   url) {
+      return A2($Native$WebGL.loadTextureRaw,
+      Linear,
+      url);
+   });
+   var loadTexture = loadTextureWithFilter(Linear);
+   var Texture = {ctor: "Texture"};
+   var unsafeShader = $Native$WebGL.unsafeCoerceGLSL;
+   var Shader = {ctor: "Shader"};
+   var TriangleStrip = function (a) {
+      return {ctor: "TriangleStrip"
+             ,_0: a};
+   };
+   var TriangleFan = function (a) {
+      return {ctor: "TriangleFan"
+             ,_0: a};
+   };
+   var Points = function (a) {
+      return {ctor: "Points"
+             ,_0: a};
+   };
+   var LineLoop = function (a) {
+      return {ctor: "LineLoop"
+             ,_0: a};
+   };
+   var LineStrip = function (a) {
+      return {ctor: "LineStrip"
+             ,_0: a};
+   };
+   var Lines = function (a) {
+      return {ctor: "Lines",_0: a};
+   };
+   var Triangle = function (a) {
+      return {ctor: "Triangle"
+             ,_0: a};
+   };
+   _elm.WebGL.values = {_op: _op
+                       ,Triangle: Triangle
+                       ,Lines: Lines
+                       ,LineStrip: LineStrip
+                       ,LineLoop: LineLoop
+                       ,Points: Points
+                       ,TriangleFan: TriangleFan
+                       ,TriangleStrip: TriangleStrip
+                       ,Shader: Shader
+                       ,unsafeShader: unsafeShader
+                       ,Texture: Texture
+                       ,Linear: Linear
+                       ,Nearest: Nearest
+                       ,Error: Error
+                       ,loadTexture: loadTexture
+                       ,loadTextureWithFilter: loadTextureWithFilter
+                       ,textureSize: textureSize
+                       ,Renderable: Renderable
+                       ,renderWithConfig: renderWithConfig
+                       ,render: render
+                       ,defaultConfiguration: defaultConfiguration
+                       ,webgl: webgl
+                       ,webglWithConfig: webglWithConfig
+                       ,computeAPICalls: computeAPICalls
+                       ,computeAPICall: computeAPICall
+                       ,Enable: Enable
+                       ,Disable: Disable
+                       ,BlendColor: BlendColor
+                       ,BlendEquation: BlendEquation
+                       ,BlendEquationSeparate: BlendEquationSeparate
+                       ,BlendFunc: BlendFunc
+                       ,DepthFunc: DepthFunc
+                       ,SampleCoverageFunc: SampleCoverageFunc
+                       ,StencilFunc: StencilFunc
+                       ,StencilFuncSeparate: StencilFuncSeparate
+                       ,StencilOperation: StencilOperation
+                       ,StencilOperationSeparate: StencilOperationSeparate
+                       ,computeCapabilityString: computeCapabilityString
+                       ,Blend: Blend
+                       ,CullFace: CullFace
+                       ,DepthTest: DepthTest
+                       ,Dither: Dither
+                       ,PolygonOffsetFill: PolygonOffsetFill
+                       ,SampleAlphaToCoverage: SampleAlphaToCoverage
+                       ,SampleCoverage: SampleCoverage
+                       ,ScissorTest: ScissorTest
+                       ,StencilTest: StencilTest
+                       ,computeBlendOperationString: computeBlendOperationString
+                       ,Zero: Zero
+                       ,One: One
+                       ,SrcColor: SrcColor
+                       ,OneMinusSrcColor: OneMinusSrcColor
+                       ,DstColor: DstColor
+                       ,OneMinusDstColor: OneMinusDstColor
+                       ,SrcAlpha: SrcAlpha
+                       ,OneMinusSrcAlpha: OneMinusSrcAlpha
+                       ,DstAlpha: DstAlpha
+                       ,OneMinusDstAlpha: OneMinusDstAlpha
+                       ,ConstantColor: ConstantColor
+                       ,OneMinusConstantColor: OneMinusConstantColor
+                       ,ConstantAlpha: ConstantAlpha
+                       ,OneMinusConstantAlpha: OneMinusConstantAlpha
+                       ,SrcAlphaSaturate: SrcAlphaSaturate
+                       ,computeBlendModeString: computeBlendModeString
+                       ,Add: Add
+                       ,Subtract: Subtract
+                       ,ReverseSubtract: ReverseSubtract
+                       ,computeCompareModeString: computeCompareModeString
+                       ,Never: Never
+                       ,Always: Always
+                       ,Less: Less
+                       ,LessOrEqual: LessOrEqual
+                       ,Equal: Equal
+                       ,GreaterOrEqual: GreaterOrEqual
+                       ,Greater: Greater
+                       ,NotEqual: NotEqual
+                       ,computeFaceModeString: computeFaceModeString
+                       ,Front: Front
+                       ,Back: Back
+                       ,FrontAndBack: FrontAndBack
+                       ,computeZModeString: computeZModeString
+                       ,Keep: Keep
+                       ,None: None
+                       ,Replace: Replace
+                       ,Increment: Increment
+                       ,Decrement: Decrement
+                       ,Invert: Invert
+                       ,IncrementWrap: IncrementWrap
+                       ,DecrementWrap: DecrementWrap};
+   return _elm.WebGL.values;
+};

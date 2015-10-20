@@ -1,0 +1,74 @@
+Elm.Main = Elm.Main || {};
+Elm.Main.make = function (_elm) {
+   "use strict";
+   _elm.Main = _elm.Main || {};
+   if (_elm.Main.values)
+   return _elm.Main.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Main",
+   $Basics = Elm.Basics.make(_elm),
+   $Color = Elm.Color.make(_elm),
+   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Time = Elm.Time.make(_elm);
+   var drawHand = F3(function (color,
+   length,
+   tick) {
+      return function () {
+         var secs = $Time.inSeconds(tick);
+         var angle = $Basics.degrees(90 - 6 * secs);
+         return $Graphics$Collage.traced($Graphics$Collage.solid(color))($Graphics$Collage.segment({ctor: "_Tuple2"
+                                                                                                   ,_0: 0
+                                                                                                   ,_1: 0})($Basics.fromPolar({ctor: "_Tuple2"
+                                                                                                                              ,_0: length
+                                                                                                                              ,_1: angle})));
+      }();
+   });
+   var drawHourHand = function (tick) {
+      return A3(drawHand,
+      $Color.orange,
+      100,
+      tick);
+   };
+   var drawMinuteHand = function (tick) {
+      return A3(drawHand,
+      $Color.charcoal,
+      100,
+      tick / 60);
+   };
+   var drawSecondHand = function (tick) {
+      return A3(drawHand,
+      $Color.charcoal,
+      60,
+      tick / 720);
+   };
+   var clockShape = A2($Graphics$Collage.ngon,
+   12,
+   110);
+   var drawClock = function (time) {
+      return A3($Graphics$Collage.collage,
+      450,
+      450,
+      _L.fromArray([$Graphics$Collage.filled($Color.lightGrey)(clockShape)
+                   ,$Graphics$Collage.outlined($Graphics$Collage.solid($Color.grey))(clockShape)
+                   ,drawHourHand(time)
+                   ,drawMinuteHand(time)
+                   ,drawSecondHand(time)]));
+   };
+   var main = $Signal.map(drawClock)($Time.every($Time.second));
+   _elm.Main.values = {_op: _op
+                      ,main: main
+                      ,drawClock: drawClock
+                      ,clockShape: clockShape
+                      ,drawHand: drawHand
+                      ,drawHourHand: drawHourHand
+                      ,drawMinuteHand: drawMinuteHand
+                      ,drawSecondHand: drawSecondHand};
+   return _elm.Main.values;
+};
